@@ -23,6 +23,25 @@ HEADERS = {
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+PUBLISHED_DATASET_URL = (
+    'https://raw.githubusercontent.com/drkrillo/good-first-issues/'
+    'main/good_first_issues.csv'
+)
+DATASET_FETCH_TIMEOUT = 10
+DATASET_CACHE_TTL_SECONDS = 3600
+DATASET_FETCH_BACKOFF_SECONDS = 300
+
+
 
 def get_template_path():
     return os.path.join(BASE_DIR, 'templates')
+
+
+def get_dataset_path():
+    """
+    Returns the path to the issues dataset, taken from the ISSUES_CSV
+    environment variable and falling back to the file the pipeline
+    writes at the repository root.
+    """
+    default_path = os.path.join(os.path.dirname(BASE_DIR), 'good_first_issues.csv')
+    return os.environ.get('ISSUES_CSV', default_path)
